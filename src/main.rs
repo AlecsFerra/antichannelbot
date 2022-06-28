@@ -20,7 +20,8 @@ async fn main() {
     let listener = webhooks::axum(bot.clone(), webhooks::Options::new(addr, url))
         .await
         .expect("Couldn't setup webhook");
-
+    
+    println!("Setup complete!");
     teloxide::repl_with_listener(
         bot,
         |message: Message, bot: AutoSend<Bot>| async move {
