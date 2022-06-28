@@ -11,17 +11,21 @@ async fn main() {
         .expect("PORT env variable is not set")
         .parse()
         .expect("PORT env variable value is not an integer");
+    println!("Port is set to: {}", port);
+
 
     let addr = ([127, 0, 0, 1], port).into();
 
     let host = env::var("HOST").expect("HOST env variable is not set");
     let url = Url::parse(&format!("https://{host}/webhooks/{token}")).unwrap();
+    println!("Url is set to {}", url);
 
     let listener = webhooks::axum(bot.clone(), webhooks::Options::new(addr, url))
         .await
         .expect("Couldn't setup webhook");
     
     println!("Setup complete!");
+
     teloxide::repl_with_listener(
         bot,
         |message: Message, bot: AutoSend<Bot>| async move {
