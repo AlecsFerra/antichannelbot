@@ -14,7 +14,7 @@ async fn main() {
     println!("Port is set to: {}", port);
 
 
-    let addr = ([127, 0, 0, 1], port).into();
+    let addr = ([0, 0, 0, 0], port).into();
 
     let host = env::var("HOST").expect("HOST env variable is not set");
     let url = Url::parse(&format!("https://{host}/webhooks/{token}")).unwrap();
@@ -23,9 +23,9 @@ async fn main() {
     let listener = webhooks::axum(bot.clone(), webhooks::Options::new(addr, url))
         .await
         .expect("Couldn't setup webhook");
-    
-    println!("Setup complete!");
 
+    println!("Setup complete!");
+    
     teloxide::repl_with_listener(
         bot,
         |message: Message, bot: AutoSend<Bot>| async move {
